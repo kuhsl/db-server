@@ -1,3 +1,3 @@
-const server = '10.16.158.117'
+const server = '163.152.30.239'
 const header = {server,}
 export default header
