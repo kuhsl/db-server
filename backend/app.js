@@ -19,7 +19,7 @@ app.use(cors());
 //global variables
 const g_operator_id = 'operator_id_001';
 const g_operator_pw = 'pw_operator';
-const g_callback_url = 'https://operator.example.com/cb';
+const g_callback_url = 'https://163.152.71.223/cb';
 
 
 let sql=require('./sql.js');
