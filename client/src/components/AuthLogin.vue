@@ -33,6 +33,7 @@
             scope: urlParams.get('scope'),
             operator_id: urlParams.get('operator_id'),
             redirect_uri: urlParams.get('redirect_uri'),
+            state: urlParams.get('state'),
             user_id: ""
           }
         };
@@ -64,7 +65,7 @@
           if(response.data!='fail') {
             console.log('authorization success');
             window.location.assign('http://www.naver.com');
-            //window.location.assign('http://operator.example.com/cb?code='+response.data); 
+            //window.location.assign('http://operator.example.com/cb?code='+response.data+'?state='+this.auth.state); 
           }else{
             alert("authorization failed!");
             //window.location.assign('http://operator.example.com/cb?error=access_denied');
