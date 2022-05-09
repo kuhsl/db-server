@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "backend" "node ./bin/www",
+    "backend": "node ./bin/www",
     "start": "concurrently \"npm run backend\" \"cd ../client && npm run serve\"",
   },
   "dependencies": {
