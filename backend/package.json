@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "backend" "node ./bin/www",
+    "start": "concurrently \"npm run backend\" \"cd ../client && npm run serve\"",
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
