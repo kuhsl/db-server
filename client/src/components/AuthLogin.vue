@@ -6,7 +6,7 @@
         </div>
         <div>
         <label>PW</label>
-        <input class="inputPw" v-model="idpw.user_pw" placeholder="input PW">
+        <input  type="password" class="inputPw" v-model="idpw.user_pw" placeholder="input PW">
         </div>
         <div>
         <button type="button" class="registerBtn" @click="userAuthenticate">Log in</button>
