@@ -36,34 +36,34 @@ module.exports = {
 
     //save grant code
     saveGrantcode : {
-        query: 'insert into grant_code_list ' +
+        query: 'insert into ?? ' +
                 'values (?, ?, ?, ?, ?, ?)'
     },
 
     //check grant code
     checkGrantcode : {
         query: 'select grant_code, operator_id, redirect_uri, scope, user_id, is_used ' +
-                'from grant_code_list ' +
+                'from ?? ' +
                 'where grant_code=?'
     },
 
-    //save access token, expires in
+    //save access token, expires in 
     saveAccessToken : {
-        query: 'insert into token_list (access_token, expires_in, scope, user_id) ' +
+        query: 'insert into ?? (access_token, expires_in, scope, user_id) ' +
                 'values (?, ?, ?, ?)'
     },
 
-    //save scope, user_id
+    //save scope, user_id 
     saveRemains : {
-        query: 'update token_list t, grant_code_list g ' +
+        query: 'update ?? t, ?? g ' +
                 'set t.scope=g.scope, t.user_id=g.user_id, g.is_used=? ' +
                 'where g.grant_code=? and t.access_token=?'
     },
 
     checkAccessToken : {
         query: 'select expires_in, scope, user_id ' +
-                'from token_list ' +
+                'from ?? ' +
                 'where access_token=?'
-    }
+    },
 
 }
