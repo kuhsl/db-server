@@ -310,7 +310,7 @@ app.get('/api/:scope/resource', async(request, res) => {
     if(!(check_access_token(scope, get_token, wanted_scope))){ is_successful=false; }
     
     //c grant resource data
-    if(!(queries=gen_queries(wanted_scope, get_token))){ is_successful=false; }
+    if(!(queries=gen_queries(scope, wanted_scope, get_token))){ is_successful=false; }
 
     for([key,value] of Object.entries(queries)){
         ret_json[key]=await get_resources_json(key,value,queries);
@@ -446,24 +446,24 @@ function gen_random_string() {
     return random_22; 
 }
 
-function gen_queries(wanted_scope, get_token){
+function gen_queries(scope, wanted_scope, get_token){
     var queries = {};
 
     if(wanted_scope == 'financial_data'){
         var query_transaction = 'select * from ' +
                                 'transaction_data ' +
-                                'where user_id = (select user_id from token_list where access_token = \''+get_token+'\')';
+                                'where user_id = (select user_id from '+scope+'_token_list where access_token = \''+get_token+'\')';
         
         var query_financial = 'select * from ' +
                                 'financial_data ' +
-                                'where user_id = (select user_id from token_list where access_token = \''+get_token+'\')';
+                                'where user_id = (select user_id from '+scope+'_token_list where access_token = \''+get_token+'\')';
         
         queries['transaction_data'] = query_transaction;
         queries['financial_data'] = query_financial;
     }else{
         var query = 'select * from ' +
                     wanted_scope +
-                    ' where user_id = (select user_id from token_list where access_token = \''+get_token+'\')';
+                    ' where user_id = (select user_id from '+scope+'_token_list where access_token = \''+get_token+'\')';
         queries[wanted_scope] = query;
     }
     
