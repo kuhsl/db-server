@@ -27,9 +27,9 @@ var mysql = require('mysql');
 const exp = require('constants');
 const { access } = require('fs');
 var connection = mysql.createConnection({
-    database: "dbSource",
+    database: "db-server",
     connectionLimit: 10,
-    host: "127.0.0.1",
+    host: "163.152.30.239",
     user: "root",
     password: "hw147258369!"
 })
