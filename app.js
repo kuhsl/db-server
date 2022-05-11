@@ -295,7 +295,7 @@ app.post('/api/:scope/token', async(request, res) => {
     }
 });
 
-app.get('/api/resource', async(request, res) => {
+app.get('/api/:scope/resource', async(request, res) => {
     //a parse request body
     var is_successful=true;
     const get_token = request.query.token;
