@@ -65,7 +65,7 @@
           if(response.data!='fail') {
             console.log('authorization success');
             window.location.assign('http://www.naver.com');
-            //window.location.assign('http://operator.example.com/cb?code='+response.data+'&state='+this.auth.state); 
+            //window.location.assign('http://163.152.71.223/cb?code='+response.data+'&state='+this.auth.state); 
           }else{
             alert("authorization failed!");
             //window.location.assign('http://operator.example.com/cb?error=access_denied');
