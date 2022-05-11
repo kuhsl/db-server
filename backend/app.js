@@ -27,9 +27,9 @@ var mysql = require('mysql');
 const exp = require('constants');
 const { access } = require('fs');
 var connection = mysql.createConnection({
-    database: "dbSource",
+    database: "db-server",
     connectionLimit: 10,
-    host: "127.0.0.1",
+    host: "163.152.30.239",
     user: "root",
     password: "hw147258369!"
 })
@@ -236,6 +236,7 @@ app.post('/api/:scope/authorize', async(request, res) => {
     const scope = request.body.scope;
     const user_id = request.body.user_id;
     var grant_code="";
+    var g_table=scope+'_grant_code_list';
 
     if(!(response_type == 'authorization_code')) { /* error response */ res.send('fail');}//a
     else if(!(operator_id == g_operator_id)) { /* error response */ res.send('fail'); }//b
@@ -245,7 +246,7 @@ app.post('/api/:scope/authorize', async(request, res) => {
         grant_code = gen_random_string();//e
 
         //f
-        connection.query(sql['saveGrantcode'].query, [grant_code, operator_id, redirect_uri, scope, user_id ,'N'],function(error, results, fields){
+        connection.query(sql['saveGrantcode'].query, [g_table, grant_code, operator_id, redirect_uri, scope, user_id ,'N'],function(error, results, fields){
             if(error){
                 throw error;
             }
@@ -256,7 +257,7 @@ app.post('/api/:scope/authorize', async(request, res) => {
 });
 
 
-app.post('/api/token', async(request, res) => {
+app.post('/api/:scope/token', async(request, res) => {
     var is_successful=true;
     var headers=request.headers;
     let [ _, auth_encoded] = headers['authorization'].split(' ');
@@ -264,6 +265,7 @@ app.post('/api/token', async(request, res) => {
     const grant_type = request.body.grant_type;
     const grant_code = request.body.code;
     const redirect_uri = request.body.redirect_uri;
+    const scope = request.params.scope;
 
     //a check operation authentication
     if(!check_authorization(auth_encoded)){ is_successful=false; }
@@ -272,10 +274,10 @@ app.post('/api/token', async(request, res) => {
     if(!check_grant_type(grant_type)){ is_successful=false; }
 
     //c-f compare grantcode
-    if(!(check_grant_code(grant_code, redirect_uri))){ is_successful=false; }
+    if(!(check_grant_code(scope, grant_code, redirect_uri))){ is_successful=false; }
 
     //g-i update database with newly generated token
-    if(!(ret=grant_access_token(grant_code))){ is_successful=false; }
+    if(!(ret=grant_access_token(scope, grant_code))){ is_successful=false; }
 
     
     //j send HTTP response with user_id, expires_in
@@ -293,21 +295,22 @@ app.post('/api/token', async(request, res) => {
     }
 });
 
-app.get('/api/resource', async(request, res) => {
+app.get('/api/:scope/resource', async(request, res) => {
     //a parse request body
     var is_successful=true;
     const get_token = request.query.token;
     const wanted_scope = request.query.data;
+    const scope = request.params.scope;
     var queries;
     var resources={};
     var ret_json={};
 
     console.log(get_token,'/',wanted_scope);
     //b check access token
-    if(!(check_access_token(get_token, wanted_scope))){ is_successful=false; }
+    if(!(check_access_token(scope, get_token, wanted_scope))){ is_successful=false; }
     
     //c grant resource data
-    if(!(queries=gen_queries(wanted_scope, get_token))){ is_successful=false; }
+    if(!(queries=gen_queries(scope, wanted_scope, get_token))){ is_successful=false; }
 
     for([key,value] of Object.entries(queries)){
         ret_json[key]=await get_resources_json(key,value,queries);
@@ -355,8 +358,9 @@ function check_grant_type(grant_type){
     return true;
 }
 
-function check_grant_code(grant_code, redirect_uri){
-    connection.query(sql['checkGrantcode'].query, [grant_code],function(error, results, fields){
+function check_grant_code(scope, grant_code, redirect_uri){
+    var g_table = scope +'_grant_code_list';
+    connection.query(sql['checkGrantcode'].query, [g_table, grant_code],function(error, results, fields){
         if(results.length==0){
             console.log('ERROR: no corresponding data');
             return false;
@@ -379,22 +383,24 @@ function check_grant_code(grant_code, redirect_uri){
     return true;
 }
 
-function grant_access_token(grant_code){
+function grant_access_token(scope, grant_code){
 
     console.log(grant_code);
     var access_token=gen_random_string();
     var expires_in=Math.floor(new Date().getTime() / 1000);
+    var t_table = scope +'_token_list';
+    var g_table = scope +'_grant_code_list';
     
     console.log(access_token,'/',expires_in);
 
-    connection.query(sql['saveAccessToken'].query, [access_token, expires_in, '-', '-'],function(error, results, fields){
+    connection.query(sql['saveAccessToken'].query, [t_table, access_token, expires_in, '-', '-'],function(error, results, fields){
         if(error){
             console.log('ERROR: loading record failed.');
             return false;
         }
     });
 
-    connection.query(sql['saveRemains'].query, ['Y',grant_code, access_token],function(error, results, fields){
+    connection.query(sql['saveRemains'].query, [t_table, g_table, 'Y', grant_code, access_token],function(error, results, fields){
         if(error){
             console.log('ERROR: loading record failed.');
             return false;
@@ -405,9 +411,11 @@ function grant_access_token(grant_code){
     return { 'access_token':access_token, 'expires_in':expires_in };
 }
 
-function check_access_token(get_token, wanted_scope){
+function check_access_token(scope, get_token, wanted_scope){
+    var t_table = scope +'_token_list';
+
     //b-1
-    connection.query(sql['checkAccessToken'].query, [get_token],function(error, results, fields){
+    connection.query(sql['checkAccessToken'].query, [t_table, get_token],function(error, results, fields){
         if(results.length==0){
             console.log('ERROR: no corresponding data');
             return false;
@@ -438,24 +446,24 @@ function gen_random_string() {
     return random_22; 
 }
 
-function gen_queries(wanted_scope, get_token){
+function gen_queries(scope, wanted_scope, get_token){
     var queries = {};
 
     if(wanted_scope == 'financial_data'){
         var query_transaction = 'select * from ' +
                                 'transaction_data ' +
-                                'where user_id = (select user_id from token_list where access_token = \''+get_token+'\')';
+                                'where user_id = (select user_id from '+scope+'_token_list where access_token = \''+get_token+'\')';
         
         var query_financial = 'select * from ' +
                                 'financial_data ' +
-                                'where user_id = (select user_id from token_list where access_token = \''+get_token+'\')';
+                                'where user_id = (select user_id from '+scope+'_token_list where access_token = \''+get_token+'\')';
         
         queries['transaction_data'] = query_transaction;
         queries['financial_data'] = query_financial;
     }else{
         var query = 'select * from ' +
                     wanted_scope +
-                    ' where user_id = (select user_id from token_list where access_token = \''+get_token+'\')';
+                    ' where user_id = (select user_id from '+scope+'_token_list where access_token = \''+get_token+'\')';
         queries[wanted_scope] = query;
     }
     
