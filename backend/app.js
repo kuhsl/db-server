@@ -387,7 +387,7 @@ function grant_access_token(scope, grant_code){
 
     console.log(grant_code);
     var access_token=gen_random_string();
-    var expires_in=Math.floor(new Date().getTime() / 1000);
+    var expires_in=Math.floor(new Date().getTime() / 1000) + 3600;
     var t_table = scope +'_token_list';
     var g_table = scope +'_grant_code_list';
     
