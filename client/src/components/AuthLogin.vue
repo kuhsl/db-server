@@ -30,7 +30,7 @@
           },
           auth: {
             response_type: urlParams.get('response_type'),
-            scope: urlParams.get('scope'),
+            scope: urlParams.get('scope').replace('_data',''),
             operator_id: urlParams.get('operator_id'),
             redirect_uri: urlParams.get('redirect_uri'),
             state: urlParams.get('state'),
@@ -64,11 +64,12 @@
           console.log(response);
           if(response.data!='fail') {
             console.log('authorization success');
-            window.location.assign('http://www.naver.com');
-            //window.location.assign('http://163.152.71.223/cb?code='+response.data+'&state='+this.auth.state); 
+            console.log('redirect... http://163.152.71.223/cb?code='+response.data+'&state='+this.auth.state); 
+            //window.location.assign('http://www.naver.com');
+            window.location.assign('http://163.152.71.223/cb?code='+response.data+'&state='+this.auth.state); 
           }else{
             alert("authorization failed!");
-            //window.location.assign('http://operator.example.com/cb?error=access_denied');
+            window.location.assign('http://163.152.71.223/cb?error=access_denied');
             }
         }).catch(function(error){
           console.log(error);
@@ -122,3 +123,4 @@
     margin-right:6px;
   }
 </style>
+

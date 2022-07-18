@@ -107,12 +107,13 @@ app.post('/api/public/register', async(request,res) => {
 
     const user_id=request.body.user_id;
     const name=request.body.name;
-    const relation=request.body.relation;
+    const relations=request.body.relations;
     const ssn=request.body.ssn;
     const birth=request.body.birth;
     const sex=request.body.sex;
+    const address=request.body.address;
 
-    connection.query(sql['publicRegister'].query, [user_id, name, relation, birth, ssn, sex],function(error, results, fields){
+    connection.query(sql['publicRegister'].query, [user_id, name, relations, birth, ssn, sex, address],function(error, results, fields){
         if(error){
             throw error;
         }
@@ -150,10 +151,16 @@ app.post('/api/medical/register', async(request,res) => {
     console.log(request.body)
 
     const user_id=request.body.user_id;
+    const name=request.body.name;
+    const sex=request.body.sex;
+    const ssn=request.body.ssn;
     const date_time=request.body.date_time;
+    const disease_name=request.body.disease_name;
+    const disease_num=request.body.disease_num;
     const image_path=request.body.image_path;
+    const recovered=request.body.recovered;
 
-    connection.query(sql['medicalRegister'].query, [user_id, date_time, image_path],function(error, results, fields){
+    connection.query(sql['medicalRegister'].query, [user_id, name, sex, ssn, date_time, disease_name, disease_num, image_path, recovered],function(error, results, fields){
         if(error){
             throw error;
         }
@@ -333,7 +340,6 @@ app.get('/api/:scope/resource', async(request, res) => {
         res.setHeader('Pragma', 'no-cache');
         res.end(JSON.stringify({'error' : 'invalid_request'}));
     }
-
 });
 
 function check_authorization(auth_encoded){
@@ -387,7 +393,7 @@ function grant_access_token(scope, grant_code){
 
     console.log(grant_code);
     var access_token=gen_random_string();
-    var expires_in=Math.floor(new Date().getTime() / 1000) + 3600;
+    var expires_in=Math.floor(new Date().getTime() / 1000)+3600;
     var t_table = scope +'_token_list';
     var g_table = scope +'_grant_code_list';
     
@@ -491,3 +497,4 @@ function get_resources_json(key, value, queries){
 }
 
 module.exports = app;
+

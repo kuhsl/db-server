@@ -1,20 +1,10 @@
 <template>
-    <div class="public_register">
+  <div class="parent">
+    <div class="child left"></div>
+    <div class="child center">
         <div>
-        <label>name</label>
+        <label>Name</label>
         <input class="inputName" v-model="info.name" placeholder="input name" style="min-width: 170px;">
-        </div>
-        <div>
-        <label>relation</label>
-        <input class="inputRelation" v-model="info.relation" placeholder="input relation" style="min-width: 170px;">
-        </div>
-        <div>
-        <label>ssn</label>
-        <input class="inputSSN" v-model="info.ssn" placeholder="input ssn" style="min-width: 170px;">
-        </div>
-        <div>
-        <label>birth</label>
-        <input class="inputBirth" v-model="info.birth" placeholder="YYYY-MM-DD" style="min-width: 170px;">
         </div>
         <div>
         <label>
@@ -24,11 +14,44 @@
         <input type="radio" value="F" v-model="info.sex" style="width:12px;height:12px;border:1px;">
         </label>
         </div>
-  
         <div>
-        <button type="button" class="registerBtn" @click="publicInsert">Register</button>
+        <label>SSN</label>
+        <input class="inputSSN" v-model="info.ssn" placeholder="input ssn" style="min-width: 170px;">
         </div>
+        <div>
+        <label>Birth</label>
+        <input type="date" class="inputBirth" v-model="info.birth" placeholder="YYYY-MM-DD" style="min-width: 170px;">
         </div>
+        <div>
+        <label>Address</label>
+        <input class="inputAddress" v-model="info.address" placeholder="input address" style="min-width: 170px;">
+        </div>
+        <div>
+        <label>Spouse</label>
+        <input class="spouse_name" v-model="spouse_name" placeholder="input spouse name" style="min-width: 170px;">
+        <input class="spouse_ssn" v-model="spouse_ssn" placeholder="input spouse ssn" style="min-width: 170px;">
+        </div>
+        <div>
+        <label>Child 1</label>
+        <input class="child_1_name" v-model="child_1_name" placeholder="input child1 name" style="min-width: 170px;">
+        <input class="child_1_ssn" v-model="child_1_ssn" placeholder="input child1 ssn" style="min-width: 170px;">
+        </div>
+        <div>
+        <label>Child 2</label>
+        <input class="child_2_name" v-model="child_2_name" placeholder="input child2 name" style="min-width: 170px;">
+        <input class="child_2_ssn" v-model="child_2_ssn" placeholder="input child2 ssn" style="min-width: 170px;">
+        </div>
+        <div>
+        <label>Child 3</label>
+        <input class="child_3_name" v-model="child_3_name" placeholder="input child3 name" style="min-width: 170px;">
+        <input class="child_3_ssn" v-model="child_3_ssn" placeholder="input child3 ssn" style="min-width: 170px;">
+        </div>
+    </div>
+    <div class="child right"></div>
+  </div>  
+  <div>
+      <button type="button" class="registerBtn" @click="publicInsert">Register</button>
+  </div>
 </template>
 
 <script>
@@ -42,11 +65,20 @@
             info: {
                 user_id: this.user_id,
                 name:'',
-                relation:'',
+                relations:'',
                 ssn:'',
                 birth:'',
                 sex:'',
+                address:'',
             },
+            spouse_name:'',
+            spouse_ssn:'',
+            child_1_name:'',
+            child_1_ssn:'',
+            child_2_name:'',
+            child_2_ssn:'',
+            child_3_name:'',
+            child_3_ssn:'',
         };
     },
     created() {
@@ -55,6 +87,23 @@
     },
     methods:{
       publicInsert() {
+
+        if(this.spouse_name!='')
+        {
+          this.info.relations+='s;'+this.spouse_name+';'+this.spouse_ssn+';';
+          if(this.child_1_name!='')
+          {
+            this.info.relations+='c;'+this.child_1_name+';'+this.child_1_ssn+';';
+            if(this.child_2_name!='')
+            {
+              this.info.relations+='c;'+this.child_2_name+';'+this.child_2_ssn+';';
+              if(this.info.child_3_name!='')
+                this.info.relations+='c;'+this.child_3_name+';'+this.child_3_ssn+';';
+            }
+          }
+        }
+        console.log(this.info.relations);
+
         axios({
         method: 'post',
         url: 'http://'+header.server+':3000/api/public/register',
@@ -81,6 +130,14 @@
     -moz-osx-font-smoothing: grayscale;
     font-weight: bold;
   }
+  .parent{
+    display: flex;
+    text-align: center;
+  }
+  .parent .child {
+    flex: 1;
+    text-align: left;
+  }
   input{
     width: 17%;
     height: 22px;
@@ -104,7 +161,7 @@
     font-weight: bold;
     border-radius:48px;
     border:0px;
-    margin:10px;
+    margin:10px 60px;
   }
   button:hover{
     color: white;

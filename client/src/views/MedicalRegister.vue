@@ -1,22 +1,53 @@
 <template>
-  <div>
-    <div class="medical_register">
+  <div class="parent">
+    <div class="child left"></div>
+    <div class="child center">
+      <div>
+        <label>Name</label>
+        <input class="inputName" v-model="info.name" placeholder="input name">
+      </div>
+      <div>
+        <label>
+        Male
+        <input type="radio" value="M" v-model="info.sex" style="width:12px;height:12px;border:1px;margin-right: 12px">
+        Female
+        <input type="radio" value="F" v-model="info.sex" style="width:12px;height:12px;border:1px;">
+        </label>
+      </div>
       <div>
       <label>SSN</label>
-      <input class="inputSSN" v-model="info.ssn" placeholder="input SSN">
+        <input class="inputSSN" v-model="info.ssn" placeholder="input SSN">
       </div>
       <div>
       <label>Date</label>
-      <input class="inputDate" v-model="info.date_time" placeholder="YYYY-MM-DD --:--">
+        <input class="inputDate" v-model="info.date_time" placeholder="YYYY-MM-DD --:--">
       </div>
       <div>
-      <label>Image path</label>
-      <input class="inputImagePath" v-model="info.image_path" placeholder="input image path">
+        <label>Disease Name</label>
+        <input class="inputDiseaseName" v-model="info.disease_name" placeholder="input disease name">
+      </div>
+      <div>
+        <label>Disease Number</label>
+        <input class="inputDiseaseNumber" v-model="info.disease_num" placeholder="input disease number"><br>
+        <p>Use semicolon ';' to separate disease numbers.</p>
+      </div>
+      <div>
+        <label>Image path</label>
+        <input class="inputImagePath" v-model="info.image_path" placeholder="input image path">
+      </div>
+      <div>
+        <label>
+        Recovered : Y
+        <input type="radio" value="Y" v-model="info.recovered" style="width:12px;height:12px;border:1px;margin-right: 12px">
+        N
+        <input type="radio" value="N" v-model="info.recovered" style="width:12px;height:12px;border:1px;">
+        </label>
       </div>
     </div>
-    <div>
-        <button type="button" class="registerBtn" @click="medicalInsert">Register</button>
-    </div>
+    <div class="child right"></div>
+  </div>
+  <div>
+    <button type="button" class="registerBtn" @click="medicalInsert">Register</button>
   </div>
 </template>
 
@@ -30,8 +61,14 @@
       return {
           info: {
             user_id : '',
+            name : '',
+            sex : '',
+            ssn : '',
             date_time : this.getTime(),
-            imate_path :'',
+            disease_name : '',
+            disease_num : '',
+            imate_path : '',
+            recovered : '',
           },
         };
     },
@@ -81,9 +118,20 @@
     -moz-osx-font-smoothing: grayscale;
     font-weight: bold;
   }
+  .parent{
+    display: flex;
+    text-align: center;
+  }
+  .parent .child {
+    flex: 1;
+    text-align: left;
+  }
+  p{
+    font-weight: 100;
+    font-size: 10%;
+  }
   input{
-    width: 17%;
-    min-width: 170px;
+    width: 70%;
     height: 22px;
     border-radius: 20px;
     border: 1px;

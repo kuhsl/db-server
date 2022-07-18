@@ -1,8 +1,8 @@
 module.exports = {
     //register data
     publicRegister : {
-        query: 'insert into public_data (user_id, name, relation, birth, ssn, sex) ' +
-                'values (?, ?, ?, ?, ?, ?)'
+        query: 'insert into public_data (user_id, name, relations, birth, ssn, sex, address) ' +
+                'values (?, ?, ?, ?, ?, ?, ?)'
     },
     financialRegister : {
         query: 'insert into financial_data (user_id, account, balance) ' +
@@ -13,8 +13,8 @@ module.exports = {
                 'values (?, ?, ?, ?)'
     },
     medicalRegister : {
-        query: 'insert into medical_data (user_id, date_time, image_path) ' +
-                'values (?, ?, ?)'
+        query: 'insert into medical_data (user_id, name, sex, ssn, date_time, disease_name, disease_num, image_path, recovered) ' +
+                'values (?, ?, ?, ?, ?, ?, ?, ?, ?)'
     },
 
     //login
