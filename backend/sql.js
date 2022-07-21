@@ -5,8 +5,8 @@ module.exports = {
                 'values (?, ?, ?, ?, ?, ?, ?)'
     },
     financialRegister : {
-        query: 'insert into financial_data (user_id, account, balance) ' +
-                'values (?, ?, ?)'
+        query: 'insert into financial_data (user_id, ssn, account, balance) ' +
+                'values (?, ?, ?, ?)'
     },
     transactionRegister : {
         query: 'insert into transaction_data (user_id, date_time, deposit_amount, withdrawal_amount) ' +

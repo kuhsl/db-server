@@ -3,6 +3,10 @@
     <div class="financial_register">
       <h3>Financial Data</h3>
       <div>
+      <label>ssn</label>
+      <input class="inputSSN" v-model="info.ssn" placeholder="input ssn">
+      </div>
+      <div>
       <label>account</label>
       <input class="inputAccount" v-model="info.account" placeholder="input account">
       </div>
@@ -41,7 +45,8 @@
     data(){
       return{
         info : {
-          user_id : "",
+          user_id : '',
+          ssn: '',
           account : 0,
           balance : 0,
           date_time : this.getTime(),

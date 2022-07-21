@@ -126,13 +126,14 @@ app.post('/api/financial/register', async(request,res) => {
     console.log(request.body)
 
     const user_id=request.body.user_id;
+    const ssn=request.body.ssn;
     const account=request.body.account;
     const balance=request.body.balance;
     const date_time=request.body.date_time;
     const deposit_amount=request.body.deposit_amount;
     const withdrawal_amount=request.body.withdrawal_amount;
 
-    connection.query(sql['financialRegister'].query, [user_id, account, balance],function(error, results, fields){
+    connection.query(sql['financialRegister'].query, [user_id, ssn, account, balance],function(error, results, fields){
         if(error){
             throw error;
         }
