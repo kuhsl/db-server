@@ -90,15 +90,15 @@
 
         if(this.spouse_name!='')
         {
-          this.info.relations+='s;'+this.spouse_name+';'+this.spouse_ssn+';';
-          if(this.child_1_name!='')
+          this.info.relations+='s:'+this.spouse_name+';'+this.spouse_ssn+';';
+          if(this.info.child_1_name!='')
           {
-            this.info.relations+='c;'+this.child_1_name+';'+this.child_1_ssn+';';
-            if(this.child_2_name!='')
+            this.info.relations+='c:'+this.child_1_name+';'+this.child_1_ssn+';';
+            if(this.info.child_2_name!='')
             {
-              this.info.relations+='c;'+this.child_2_name+';'+this.child_2_ssn+';';
+              this.info.relations+='c:'+this.child_2_name+';'+this.child_2_ssn+';';
               if(this.info.child_3_name!='')
-                this.info.relations+='c;'+this.child_3_name+';'+this.child_3_ssn+';';
+                this.info.relations+='c:'+this.child_3_name+';'+this.child_3_ssn+';';
             }
           }
         }
