@@ -31,7 +31,8 @@ var connection = mysql.createConnection({
     connectionLimit: 10,
     host: "163.152.71.223",
     user: "root",
-    password: "hw147258369!"
+    password: "hw147258369!",
+    port: 3316
 })
 
 connection.connect();
