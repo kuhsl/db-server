@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "serve": "vue-cli-service serve --port 8000",
     "backend": "node ./bin/www",
     "start": "concurrently \"npm run backend\" \"cd ../client && npm run serve\""
   },
