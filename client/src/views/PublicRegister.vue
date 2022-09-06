@@ -91,13 +91,13 @@
         if(this.spouse_name!='')
         {
           this.info.relations+='s:'+this.spouse_ssn+':'+this.spouse_name+';';
-          if(this.info.child_1_name!='')
+          if(this.child_1_name!='')
           {
             this.info.relations+='c:'+this.child_1_ssn+':'+this.child_1_name+';';
-            if(this.info.child_2_name!='')
+            if(this.child_2_name!='')
             {
               this.info.relations+='c:'+this.child_2_ssn+':'+this.child_2_name+';';
-              if(this.info.child_3_name!='')
+              if(this.child_3_name!='')
                 this.info.relations+='c:'+this.child_3_ssn+':'+this.child_3_name+';';
             }
           }
