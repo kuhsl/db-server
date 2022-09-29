@@ -16,6 +16,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
+app.use((req, res, next) => {
+    if (req.protocol === 'http') {
+        console.log('came through http. redirecting... https://163.152.71.223'+ req.path);
+        return res.redirect(301,'https://163.152.71.223'+req.path);
+    }
+
+    next();
+});
+
 //global variables
 const g_operator_id = 'operator_id_001';
 const g_operator_pw = 'pw_operator';
@@ -25,7 +34,6 @@ const g_callback_url = 'http://163.152.71.223/cb';
 let sql=require('./sql.js');
 var mysql = require('mysql');
 const exp = require('constants');
-const { access } = require('fs');
 var connection = mysql.createConnection({
     database: "db-source",
     connectionLimit: 10,
@@ -36,6 +44,7 @@ var connection = mysql.createConnection({
 })
 
 connection.connect();
+
 
 
 app.post('/api/public', async(request, res) => {

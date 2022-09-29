@@ -80,7 +80,7 @@
       medicalInsert() {
         axios({
         method: 'post',
-        url: 'http://'+header.server+':3000/api/medical/register',
+        url: 'https://'+header.server+':'+header.port+'/api/medical/register',
         data: this.info,
       }).then((response) => {
         console.log(response);

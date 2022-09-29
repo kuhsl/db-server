@@ -32,7 +32,7 @@
       checkLoginToRegister(){
         axios({
         method: 'post',
-        url: 'http://'+header.server+':3000/api/'+this.scope,
+        url: 'https://'+header.server+':'+header.port+'/api/'+this.scope,
         data: this.idpw
       }).then((response) => {
         console.log(response);

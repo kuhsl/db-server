@@ -106,7 +106,7 @@
 
         axios({
         method: 'post',
-        url: 'http://'+header.server+':3000/api/public/register',
+        url: 'https://'+header.server+':'+header.port+'/api/public/register',
         data: this.info,
       }).then((response) => {
         console.log(response);

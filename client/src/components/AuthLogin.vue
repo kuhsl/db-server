@@ -42,7 +42,7 @@
       userAuthenticate(){
           axios({
           method: 'post',
-          url: 'http://'+header.server+':3000/api/'+this.auth.scope+'/authenticate',
+          url: 'https://'+header.server+':'+header.port+'/api/'+this.auth.scope+'/authenticate',
           data: this.idpw
         }).then((response) => {
           console.log(response);
@@ -58,7 +58,7 @@
           this.auth.user_id=this.idpw.user_id;
           axios({
           method: 'post',
-          url: 'http://'+header.server+':3000/api/'+this.auth.scope+'/authorize',
+          url: 'https://'+header.server+':'+header.port+'/api/'+this.auth.scope+'/authorize',
           data: this.auth
         }).then((response) => {
           console.log(response);
