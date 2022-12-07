@@ -17,9 +17,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
 app.use((req, res, next) => {
-    if (req.protocol === 'http') {
-        console.log('came through http. redirecting... https://163.152.71.223'+ req.path);
-        return res.redirect(301,'https://163.152.71.223'+req.path);
+    if (req.protocol === 'https') {
+        console.log('came through https');
     }
 
     next();
@@ -44,7 +43,6 @@ var connection = mysql.createConnection({
 })
 
 connection.connect();
-
 
 
 app.post('/api/public', async(request, res) => {
@@ -270,6 +268,7 @@ app.post('/api/:scope/authorize', async(request, res) => {
             }
         });
 
+        console.log('timestamp-[start]: ',Date.now());
         res.send(grant_code);
     }
 });
@@ -508,4 +507,5 @@ function get_resources_json(key, value, queries){
 }
 
 module.exports = app;
+
 
